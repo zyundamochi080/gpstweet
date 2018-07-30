@@ -15,12 +15,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     LocationManager locationManager;
+    String str1,str2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     1000, 50, this);
         }
+        /*さっきはここに置いてた
+        Button button = (Button)findViewById(R.id.tweet);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplication(),TweetActivity.class);
+                intent.putExtra("DATA1",str1);
+                intent.putExtra("DATA2",str2);
+                startActivity(intent);
+            }
+        });
+        下に動かした*/
     }
 
     private void locationStart(){
@@ -68,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000, 50, this);
     }
-
-    // 結果(https://developers.google.com/sheets/api/quickstart/android)参照
 
     @Override
     public void onRequestPermissionsResult(
@@ -107,14 +121,26 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(Location location) {
         // 緯度の表示
         TextView textView1 = (TextView) findViewById(R.id.text_view1);
-        String str1 = "Latitude"+location.getLatitude();
+        str1 = "Latitude:"+location.getLatitude();
         textView1.setText(str1);
 
         // 経度の表示
         TextView textView2 = (TextView) findViewById(R.id.text_view2);
-        String str2 = "Longtude:"+location.getLongitude();
+        str2 = "Longtude:"+location.getLongitude();
         textView2.setText(str2);
     }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tweet:
+            Intent intent = new Intent(this, TweetActivity.class);
+            intent.putExtra("DATA1", str1);
+            intent.putExtra("DATA2", str2);
+            startActivity(intent);
+            break;
+        }
+    }
+
 
     @Override
     public void onProviderEnabled(String provider) {
@@ -125,4 +151,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String provider) {
 
     }
+
 }
