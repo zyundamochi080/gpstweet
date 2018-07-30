@@ -16,8 +16,8 @@ public class TweetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sub_tweet);
 
         Intent intent = getIntent();
-        msg_Lat = intent.getStringExtra("data1");
-        msg_Lon = intent.getStringExtra("data2");
+        msg_Lat = intent.getStringExtra("DATA1");
+        msg_Lon = intent.getStringExtra("DATA2");
 
         EditText editText = (EditText)findViewById(R.id.editText);
         editText.setText(msg_Lat +","+ msg_Lon);
