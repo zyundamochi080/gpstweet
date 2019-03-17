@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -42,19 +43,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     1000, 50, this);
         }
-        /*さっきはここに置いてた
-        Button button = (Button)findViewById(R.id.tweet);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplication(),TweetActivity.class);
-                intent.putExtra("DATA1",str1);
-                intent.putExtra("DATA2",str2);
-                startActivity(intent);
-            }
-        });
-        下に動かした*/
     }
 
     private void locationStart(){
@@ -133,11 +121,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tweet:
-            Intent intent = new Intent(this, TweetActivity.class);
+                Uri uri = Uri.parse("https://twitter.com/intent/tweet?text="+ str1 +","+ str2);
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
+                break;
+            /*Intent intent = new Intent(this, TweetActivity.class);
             intent.putExtra("DATA1", str1);
             intent.putExtra("DATA2", str2);
             startActivity(intent);
             break;
+            */
         }
     }
 
