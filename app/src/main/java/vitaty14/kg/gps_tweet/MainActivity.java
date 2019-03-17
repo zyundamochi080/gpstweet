@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,13 +17,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
     LocationManager locationManager;
+    Double lat,lon,alt;
     String str1,str2;
 
     @Override
@@ -42,19 +47,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     1000, 50, this);
         }
-        /*さっきはここに置いてた
-        Button button = (Button)findViewById(R.id.tweet);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplication(),TweetActivity.class);
-                intent.putExtra("DATA1",str1);
-                intent.putExtra("DATA2",str2);
-                startActivity(intent);
-            }
-        });
-        下に動かした*/
     }
 
     private void locationStart(){
@@ -96,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             } else {
                 // 拒絶
                 Toast toast = Toast.makeText(this,
-                        "出来ることがありません", Toast.LENGTH_SHORT);
+                        "何もできません", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
@@ -119,28 +111,36 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location) {
+        // 取得日時の表示
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        TextView textView3 = (TextView) findViewById(R.id.textView_time);
+        textView3.setText("Time:"+df.format(location.getTime()));
+
         // 緯度の表示
-        TextView textView1 = (TextView) findViewById(R.id.text_view1);
-        str1 = "Latitude:"+location.getLatitude();
-        textView1.setText(str1);
+        TextView textView1 = (TextView) findViewById(R.id.textView_lat);
+        lat = location.getLatitude();
+        textView1.setText("Latitude:"+String.format("%.5f",lat));
 
         // 経度の表示
-        TextView textView2 = (TextView) findViewById(R.id.text_view2);
-        str2 = "Longtude:"+location.getLongitude();
-        textView2.setText(str2);
+        TextView textView2 = (TextView) findViewById(R.id.textView_lon);
+        lon = location.getLongitude();
+        textView2.setText("Longitude:"+String.format("%.5f",lon));
+
+        // 高度の表示
+        TextView textView4 = (TextView) findViewById(R.id.textView_alt);
+        alt = location.getAltitude();
+        textView4.setText("Altitude:"+String.format("%.2f",alt));
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tweet:
-            Intent intent = new Intent(this, TweetActivity.class);
-            intent.putExtra("DATA1", str1);
-            intent.putExtra("DATA2", str2);
-            startActivity(intent);
-            break;
+                Uri uri = Uri.parse("https://twitter.com/intent/tweet?text="+"今 "+ String.format("%.5f",lat) +","+ String.format("%.5f",lon) +" にいるよ");
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
+                break;
         }
     }
-
 
     @Override
     public void onProviderEnabled(String provider) {
@@ -151,5 +151,4 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String provider) {
 
     }
-
 }
