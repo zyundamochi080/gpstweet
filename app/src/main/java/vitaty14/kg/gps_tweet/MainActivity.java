@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         else{
             locationStart();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    1000, 50, this);
+                    100, 5, this);
         }
     }
 
