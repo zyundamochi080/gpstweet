@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     LocationManager locationManager;
     Double lat,lon,alt;
-    String str1,str2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,23 +112,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(Location location) {
         // 取得日時の表示
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        TextView textView3 = (TextView) findViewById(R.id.textView_time);
-        textView3.setText("Time:"+df.format(location.getTime()));
+        TextView textView_time = findViewById(R.id.textView_time);
+        textView_time.setText("Time:"+df.format(location.getTime()));
 
         // 緯度の表示
-        TextView textView1 = (TextView) findViewById(R.id.textView_lat);
+        TextView textView_lat = findViewById(R.id.textView_lat);
         lat = location.getLatitude();
-        textView1.setText("Latitude:"+String.format("%.5f",lat));
+        textView_lat.setText("Latitude:"+String.format("%.5f",lat));
 
         // 経度の表示
-        TextView textView2 = (TextView) findViewById(R.id.textView_lon);
+        TextView textView_lon = findViewById(R.id.textView_lon);
         lon = location.getLongitude();
-        textView2.setText("Longitude:"+String.format("%.5f",lon));
+        textView_lon.setText("Longitude:"+String.format("%.5f",lon));
 
         // 高度の表示
-        TextView textView4 = (TextView) findViewById(R.id.textView_alt);
+        TextView textView_alt = findViewById(R.id.textView_alt);
         alt = location.getAltitude();
-        textView4.setText("Altitude:"+String.format("%.2f",alt));
+        textView_alt.setText("Altitude:"+String.format("%.2f",alt));
     }
 
     public void onClick(View v) {
